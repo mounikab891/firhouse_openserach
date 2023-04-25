@@ -1,0 +1,44 @@
+
+#resource "aws_s3_bucket" "this_bucket" {
+  #bucket = "s3-logs-platform"
+#}
+
+resource "aws_s3_object" "object" {
+  bucket = var.bucket
+  key    = "stg-mb-logs-fintech/"
+}
+
+data "aws_iam_role" "firehose" {
+  name = "firehose_opensearch"
+}
+
+resource "aws_kinesis_firehose_delivery_stream" "test" {
+  depends_on = [data.aws_iam_role.firehose]
+
+  name        = "stg-mb-logs-fintech"
+  destination = "opensearch"
+  s3_configuration {
+    role_arn   = data.aws_iam_role.firehose.arn
+    bucket_arn = var.bucket_arn
+    prefix     = var.s3_prefix
+    
+  }
+  opensearch_configuration {
+    domain_arn = var.opensearch_domain_arn
+    role_arn   = data.aws_iam_role.firehose.arn
+    index_name = var.index_name
+
+    vpc_config {
+      security_group_ids = [var.security_group_id]
+      subnet_ids         = [var.aws_subnet]
+      role_arn           = data.aws_iam_role.firehose.arn
+    }
+  }
+}
+
+
+
+
+
+
+  
