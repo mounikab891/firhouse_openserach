@@ -66,6 +66,10 @@ resource "aws_kinesis_firehose_delivery_stream" "test" {
   depends_on = [aws_iam_role_policy.firehose-opensearch]
 
   name        = "stg-mb-logs-meds"
+  tags = {
+        Environment = "Production"
+        Team = "*******"
+    }
   destination = "opensearch"
   s3_configuration {
     role_arn   = aws_iam_role.firehose.arn
@@ -77,6 +81,7 @@ resource "aws_kinesis_firehose_delivery_stream" "test" {
     domain_arn = var.opensearch_domain_arn
     role_arn   = aws_iam_role.firehose.arn
     index_name = var.index_name
+    retry_duration = 60
 
     vpc_config {
       security_group_ids = [var.security_group_id]
