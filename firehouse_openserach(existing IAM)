@@ -14,6 +14,10 @@ resource "aws_kinesis_firehose_delivery_stream" "test" {
   depends_on = [data.aws_iam_role.firehose]
 
   name        = var.firehose_name
+   tags = {
+        Environment = "Production"
+        Team = "*****"
+    }
   destination = "opensearch"
   s3_configuration {
     role_arn   = data.aws_iam_role.firehose.arn
@@ -25,6 +29,7 @@ resource "aws_kinesis_firehose_delivery_stream" "test" {
     domain_arn = var.opensearch_domain_arn
     role_arn   = data.aws_iam_role.firehose.arn
     index_name = var.index_name
+    retry_duration = 60
 
     vpc_config {
       security_group_ids = [var.security_group_id]
