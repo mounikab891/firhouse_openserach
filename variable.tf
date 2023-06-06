@@ -1,5 +1,5 @@
 variable "vpc" {
-    default = "vpc-08e222910f114ade8"
+    default = "XXXXX"
 }
 
 variable "security_group_id" {
