@@ -1,11 +1,11 @@
 
 #resource "aws_s3_bucket" "this_bucket" {
-  #bucket = "s3-logs-platform"
+  #bucket = "XXXX"
 #}
 
 resource "aws_s3_object" "object" {
   bucket = var.bucket
-  key    = "stg-mb-logs-meds/"
+  key    = "XXXXXX"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "firehose-opensearch" {
         "es:*"
       ],
       "Resource": [
-        "arn:aws:es:ap-south-1:247653494814:domain/*"
+        "arn:aws:es:XXXXXX:domain/*"
       ]
         },
         {
@@ -65,7 +65,7 @@ EOF
 resource "aws_kinesis_firehose_delivery_stream" "test" {
   depends_on = [aws_iam_role_policy.firehose-opensearch]
 
-  name        = "stg-mb-logs-meds"
+  name        = "XXXXX"
   tags = {
         Environment = "Production"
         Team = "*******"
